@@ -1,0 +1,14 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""user"""
+type User {
+  id: ID!
+  description: String
+  avatar: String
+}
+
+type Query {
+  user(id: String!): User!
+}

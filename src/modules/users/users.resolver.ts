@@ -1,16 +1,18 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Resolver, Query } from '@nestjs/graphql';
-import { User } from 'src/entities/user.entity';
+import { UserEntity } from 'src/entities/user.entity';
 import { UsersService } from './users.service';
 
-@Resolver(() => User)
+@Resolver(() => UserEntity)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => User)
-  async user(@Args('id') id: number): Promise<User> {
-    const user = await this.usersService.findOneById(id);
-    if (!user) throw new NotFoundException(id);
+  @Query(() => UserEntity)
+  async user(
+    @Args('rsaPrivateKey') rsaPrivateKey: string,
+  ): Promise<UserEntity> {
+    const user = await this.usersService.findOne(rsaPrivateKey);
+    if (!user) throw new NotFoundException(rsaPrivateKey);
     return user;
   }
 }

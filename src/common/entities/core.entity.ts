@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @ObjectType()
-export class CoreEntity {
+export class BaseEntity {
   @PrimaryGeneratedColumn({ comment: 'Primary key' })
   @Field(() => Number)
   @IsInt()

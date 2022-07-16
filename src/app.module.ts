@@ -1,23 +1,24 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { TypeOrmConfigService } from './common/typeorm.config';
+import { GraphQlConfigService } from './common/core/configs/graphql.config';
+import { TypeOrmOptionsService } from './common/core/configs/typeorm.config';
+import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigService,
+      useClass: TypeOrmOptionsService,
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
-      sortSchema: true,
-      debug: true,
-      playground: true,
+      useClass: GraphQlConfigService,
     }),
   ],
 })
